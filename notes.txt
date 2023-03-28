@@ -1,4 +1,4 @@
 We plotted life expectany over time.
-Added anylses on points
-Another line added.
+Each point represents a countrys
+Continents grouped by color
 
