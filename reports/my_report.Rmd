@@ -1,0 +1,106 @@
+---
+title: "Writing Reports with R Markdown"
+author: "Sarah Katz"
+date: "2023-03-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, include=FALSE}
+library(tidyverse)
+```
+
+This report was prepared to the attention of the United Nations. It analyzes the relationship between a country's GDP, its life expectancy and CO2 emission. Our goal is to determine to what degree a county's economic strength or weakness may be related to its public health status and impact on climate pollution. We hypothesize that both life expectancy and CO2 emissions increase with s country's GDP.
+
+
+```{r data, include=FALSE}
+gapminder_1997 <- read_csv("data/gapminder_1997.csv")
+```
+```{r gdp_lifeexp_1997, echo=FALSE}
+ggplot(data = gapminder_1997) +
+  aes(x = gdpPercap, y = lifeExp, color = continent, size = pop/1000000) +
+  geom_point() +
+  labs(x = "GDP Per Capita", 
+       y = "Life Expectancy", 
+       title = "Do people in wealthy countries live longer?", 
+       size = "Population (in Millions)")
+```
+
+
+#Use coded variable in line of the text
+
+#defined variable to be used in writing
+```{r include=FALSE}
+nCountries <- gapminder_1997 %>% 
+  select(country) %>% 
+  n_distinct()
+
+minGDP <- gapminder_1997 %>% 
+  summarise(round(min(gdpPercap))) %>% 
+  pull()
+
+maxGDP <- gapminder_1997 %>% 
+  summarise(round(max(gdpPercap))) %>% 
+  pull()
+
+```
+
+
+The above plot shows the relationship between GDP per capita and life expectancy for a total of `r nCountries ` countries. For this set of countries, economic wealth ranged from a minimum of USD `r minGDP ` to a maximum of USD `r maxGDP `
+
+#Creating a table
+
+|HEADER 1|HEADER 2|
+|--------|--------|
+|row 1, column 1|row 1, column 2|
+|row 2, column 1|row 2, column 2|
+
+
+|Summary of Data|
+|--------|--------|
+|Number of Countries|`r nCountries`|
+|Minimum GDP Per Capita|`r minGDP`|
+|Maximum GDP Per Capita|`r maxGDP`|
+
+
+```{r kabletable}
+library(knitr)
+
+gapminder_1997 %>% 
+  filter(continent == "Oceania") %>% 
+  kable()
+```
+
+# Header 1
+## Header 2
+### My third header
+
+Exercise: R Markdown Synax
+* Create a bullet point list with three items
+* as the first item, write the name of your currently favorite programing language in bold
+* as the second item, write the name of a function you have so far found most useful
+* as the third item, write one thing you want to learn on your programming journey in bold italics
+* turn your bullet point list into a numbered list
+* create a forth list item and find an online guide and/or cheat sheet for basic Markdown synax, write its name down here and hyperlink its url
+
+My List:
+* **R**
+* *ggplot()*
+* ***I want to know more about plotting data***
+
+1. **R**
+2. *ggplot()*
+3. ***I want to know more about plotting data***
+4. [https://www.markdownguide.org/cheat-sheet/](Great Markdown Guide)
+5. [https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf]
+
+
+
+
+
+
+
+
